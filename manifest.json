@@ -1,0 +1,14 @@
+{
+  "manifest_version": 2,
+  "name": "patty",
+  "version": "0.1",
+  "description": "Fast traslate for you",
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": ["jquery-3.4.1.min.js","popup.js"]
+    }
+  ]
+}
