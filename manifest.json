@@ -3,12 +3,31 @@
   "name": "patty",
   "version": "0.1",
   "description": "Fast traslate for you",
+  "permissions": [
+    "activeTab",
+    "declarativeContent",
+    "storage",
+    "<all_urls>"
+  ],
+  "background": {
+    "scripts": [
+      "jquery-3.4.1.min.js","background.js"
+    ],
+    "persistent": false
+  },
+  "page_action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "48": "icons/v2_48.png"
+    }
+  },
+  "options_page": "options.html",
   "content_scripts": [
     {
       "matches": [
         "<all_urls>"
       ],
-      "js": ["jquery-3.4.1.min.js","popup.js"]
+      "js": ["jquery-3.4.1.min.js","content.js"]
     }
   ]
 }
