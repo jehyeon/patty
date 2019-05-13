@@ -1,30 +1,16 @@
-// 항상 동작
+let changeColor = document.getElementById('changeColor');
 
-// 일단 'h1'에서만 정보 가져오기
-$('h1').mouseup(function() {
-  if (window.getSelection) {
-    // alert(window.getSelection());
-    // for test ->
-    translateThis(window.getSelection());
-    // 드래그 시 해당 pos 상단에 option 창 띄우기 (translate, save)
-  }
+chrome.storage.sync.get('color', function (data) {
+  changeColor.style.backgroundColor = data.color;
+  changeColor.setAttribute('value', data.color);
 });
 
-function translateThis(wantToTranslate) {
-  // 언어 설정은 추후 update
-  const source = 'en';
-  const target = 'ko';
-  const format = 'html';
-  const apiKey = '********';
-
-  $.ajax({
-    type: 'POST',
-    data: '&source=' + source + '&target=' + target + '&format=' + format + '&q=' + wantToTranslate,
-    url: 'https://www.googleapis.com/language/translate/v2?key=' + apiKey,
-    success:function(response) {
-      alert(response);
-      // DOM 조작
-    }
-  });
-}
-
+// changeColor.onClick = function (element) {
+//   let color = element.target.value;
+//   chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
+//     chrome.tabs.executeScript(
+//       tabs[0].id,
+//       {code: 'document.body.style.backgroundColor = "' + color + '";'}
+//     );
+//   });
+// };
