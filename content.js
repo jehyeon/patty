@@ -1,3 +1,14 @@
+// for test
+const bubble = $('<span />');
+const bubble_css = {
+  'position': 'absolute',
+  'margin-top': '-1.5em',
+  'background': 'red',
+  'border': '1px solid red',
+  'border-radius': '5px',
+  'z-index': 9999
+};
+
 // 항상 동작
 // 번역 모드 on 인 경우 
 $('*').mouseup(function(e) {
@@ -8,8 +19,9 @@ $('*').mouseup(function(e) {
     // console.log('raw');
     // console.log(window.getSelection());
     const draged = window.getSelection().toString();
-    console.log('draged: ' + draged);
     
+    const target = $(this);
+    const text = target.html();
     // + 여러 영역 드래그 시 처음 문단만 쪼개는 기능 
     // + 온전하지 못한 문장 시 삭제하기 
     // ex. 'Simple one-time requests' -> 'ple one-time reque' -> 'one-time'
@@ -20,6 +32,9 @@ $('*').mouseup(function(e) {
       chrome.runtime.sendMessage({before: draged}, function(response) {
         if (response) {
           console.log('response is ' + response.response);
+          bubble.text(response.response).css(bubble_css);
+          target.prepend(bubble);
+          // target.html(text.replace(draged, response.response));
         } else {
           console.log('No reponse')
         }
