@@ -18,7 +18,11 @@ $('*').mouseup(function(e) {
     // window.getSelection이 아닌 정확히 드래그 할 때만 동작하도록 수정 필요
     if (window.getSelection().toString().length > 2) {
       chrome.runtime.sendMessage({before: draged}, function(response) {
-          console.log(response.response);
+        if (response) {
+          console.log('response is ' + response.response);
+        } else {
+          console.log('No reponse')
+        }
       });
     }
     // translateThis(window.getSelection());

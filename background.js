@@ -5,29 +5,26 @@ chrome.runtime.onInstalled.addListener(function() {
   //   console.log("The color is green.");
   // });
 
-
-  chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
-    chrome.declarativeContent.onPageChanged.addRules([{
-      conditions: [new chrome.declarativeContent.PageStateMatcher({
-          pageUrl: {hostEquals: 'developer.chrome.com'},
-        })
-      ], 
-        actions: [new chrome.declarativeContent.ShowPageAction()]
-    }]);
-  });
+  // for test
+  // chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
+  //   chrome.declarativeContent.onPageChanged.addRules([{
+  //     conditions: [new chrome.declarativeContent.PageStateMatcher({
+  //         pageUrl: {hostEquals: 'developer.chrome.com'},
+  //       })
+  //     ], 
+  //       actions: [new chrome.declarativeContent.ShowPageAction()]
+  //   }]);
+  // });
 })
 
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
+    translateThis(request.before, sendResponse);
+    return true;
+});
 
-    const after = translateThis(request.before);    // after가 undefined
 
-    sendResponse({
-      response: after
-    });
-  });
-
-function translateThis(wantToTranslate) {
+function translateThis(wantToTranslate, sendResponse) {
   // 언어 설정은 추후 update
   const source = "en";
   const target = "ko";
@@ -39,8 +36,8 @@ function translateThis(wantToTranslate) {
     data: "&source=" + source + "&target=" + target + "&format=" + format + "&q=" + wantToTranslate,
     url: "https://www.googleapis.com/language/translate/v2?key=" + apiKey,
     success: function(response) {
-      console.log(response.data.translations[0].translatedText); // 정상적으로 나옴
-      return response.data.translations[0].translatedText;      // translatedText
+      // console.log(response.data.translations[0].translatedText); 
+      sendResponse({response: response.data.translations[0].translatedText});
     }
   });
 }
