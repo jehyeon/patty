@@ -1,25 +1,39 @@
 chrome.runtime.onInstalled.addListener(function() {
-  // for test
-  // extension 설치 시 storage sync에 {color: "#3aa757"} 저장 
-  // chrome.storage.sync.set({color: '#3aa757'}, function() {
-  //   console.log("The color is green.");
-  // });
-
-  // for test
-  // chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
-  //   chrome.declarativeContent.onPageChanged.addRules([{
-  //     conditions: [new chrome.declarativeContent.PageStateMatcher({
-  //         pageUrl: {hostEquals: 'developer.chrome.com'},
-  //       })
-  //     ], 
-  //       actions: [new chrome.declarativeContent.ShowPageAction()]
-  //   }]);
-  // });
-})
+  // extension 설치 시 storage sync에 {data: []} 저장 
+  chrome.storage.sync.set({data: []}, function () {
+    // console.log('Made data storage');
+  });
+});
 
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
-    translateThis(request.before, sendResponse);
+
+    // console.log('*** background receive message ***')
+    // console.log(request.msg);
+    // console.log(request.data);
+    // console.log('from');
+    // console.log(sender);
+    // console.log('**********************************')
+
+    if (request.msg === 'translateThis') {
+      translateThis(request.data.before, sendResponse);
+    }
+
+    if (request.msg === 'add') {
+      chrome.storage.sync.get(['data'], function (response) {
+        let added = {};
+        added[request.data.before] = request.data.after;
+
+        // console.log('Add to ');
+        // console.log(added);
+        
+        chrome.storage.sync.set({data: [...response.data, added]}, function() {
+          // console.log('Update data');
+          // console.log([...response.data, added]);
+        })
+      });
+    }
+
     return true;
 });
 
