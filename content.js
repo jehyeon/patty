@@ -49,20 +49,28 @@ $('*').mouseup(function(e) {
 
     // Text 터치 시 POST 하지 않도록 temp condtion
     // window.getSelection이 아닌 정확히 드래그 할 때만 동작하도록 수정 필요
-    chrome.runtime.sendMessage(data, function(response) {
-      if (response) {
-        // console.log('response is ' + response.response);
-        // bubble.text(response.response).css(bubble_css);
-        
-        target.html(originText.replace(dragged, "<span class='dragged'>" + response.response + "</span>"  + dragged));
-        $('span.dragged').css(bubble_css);
-        // bubble.insertBefore($('span.dragged'));
-        // target.html(text.replace(draged, response.response));
-      } else {
-        // console.log('No reponse')
+    // after -> translate(dragged) 로 수정해야 함
+    chrome.runtime.sendMessage(
+      {
+        msg: 'add',
+        data: {
+          before: dragged,
+          after: dragged
+        }
       }
-    });
+    );
+    // 번역을 함수로 수정 
+    // chrome.runtime.sendMessage(data, function(response) {
+    //   if (response) {
+    //     // console.log('response is ' + response.response);
+    //     // bubble.text(response.response).css(bubble_css);
+        
+    //     target.html(originText.replace(dragged, "<span class='dragged'>" + response.response + "</span>"  + dragged));
+    //     $('span.dragged').css(bubble_css);
+
+    //   } else {
+    //     // console.log('No reponse')
+    //   }
+    // });
   }
-    // translateThis(window.getSelection());
-    // 드래그 시 해당 pos 상단에 option 창 띄우기 (translate, save)
 });
