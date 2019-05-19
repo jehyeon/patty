@@ -1,39 +1,54 @@
+const debugMode = true;
+
+// Extensions installed 시 동작
 chrome.runtime.onInstalled.addListener(function() {
   // extension 설치 시 storage sync에 {data: []} 저장 
   chrome.storage.sync.set({data: []}, function () {
-    // console.log('Made data storage');
+    if (debugMode) {
+      console.log('Made data storage');
+    }
   });
 });
 
+// event listener
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
 
-    // console.log('*** background receive message ***')
-    // console.log(request.msg);
-    // console.log(request.data);
-    // console.log('from');
-    // console.log(sender);
-    // console.log('**********************************')
-
-    if (request.msg === 'translateThis') {
-      translateThis(request.data.before, sendResponse);
+    if (debugMode) {
+      // Message Infos
+      console.log('*** background receive message ***')
+      console.log(request.msg);
+      console.log(request.data);
+      console.log('from');
+      console.log(sender);
+      console.log('**********************************')
     }
 
-    if (request.msg === 'add') {
-      chrome.storage.sync.get(['data'], function (response) {
-        let added = {};
-        added[request.data.before] = request.data.after;
+    // Action 처리
+    switch (request.msg) {
+      case 'TRANSLATE':
+        translateThis(request.data.before, sendResponse);
+        break;
+      case 'ADD':
+        // sync['data'] 가져온 뒤 update 후 다시 set
+        chrome.storage.sync.get(['data'], function (response) {
+          let added = {};
+          added[request.data.before] = request.data.after;
 
-        // console.log('Add to ');
-        // console.log(added);
-        
-        chrome.storage.sync.set({data: [...response.data, added]}, function() {
-          // console.log('Update data');
-          // console.log([...response.data, added]);
-        })
-      });
+          if (debugMode) {
+            console.log('Add to ');
+            console.log(added);
+          }
+          
+          chrome.storage.sync.set({data: [...response.data, added]}, function() {
+            if (debugMode) {
+              console.log('Updated data');
+              console.log([...response.data, added]);
+            }
+          })
+        });
+        break;
     }
-
     return true;
 });
 
@@ -43,6 +58,7 @@ function translateThis(wantToTranslate, sendResponse) {
   const source = "en";
   const target = "ko";
   const format = "html";
+  // Need to update config get
   const apiKey = "AIzaSyBuSU19mIptUkH0-8OHFpoRjOMieyy1o5Q";
 
   $.ajax({
@@ -50,8 +66,11 @@ function translateThis(wantToTranslate, sendResponse) {
     data: "&source=" + source + "&target=" + target + "&format=" + format + "&q=" + wantToTranslate,
     url: "https://www.googleapis.com/language/translate/v2?key=" + apiKey,
     success: function(response) {
-      // console.log(response.data.translations[0].translatedText); 
+      if (debugMode) {
+        console.log(response.data.translations[0].translatedText); 
+      }
       sendResponse({response: response.data.translations[0].translatedText});
     }
+    // Need to update 'error 처리'
   });
 }
