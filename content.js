@@ -37,15 +37,6 @@ $('*').mouseup(function(e) {
     originText = target.html();
 
     console.log(dragged);
-    // *************
-    // // for test
-    // chrome.runtime.sendMessage({msg: 'add', data:{before: 'hahaha', after: 'gooood!'}});
-    // *************
-    // drag한 text에 class 씌우기
-    
-    // + 여러 영역 드래그 시 처음 문단만 쪼개는 기능 
-    // + 온전하지 못한 문장 시 삭제하기 
-    // ex. 'Simple one-time requests' -> 'ple one-time reque' -> 'one-time'
 
     // Text 터치 시 POST 하지 않도록 temp condtion
     // window.getSelection이 아닌 정확히 드래그 할 때만 동작하도록 수정 필요
@@ -59,7 +50,7 @@ $('*').mouseup(function(e) {
         }
       }
     );
-    // 번역을 함수로 수정 
+
     // chrome.runtime.sendMessage(data, function(response) {
     //   if (response) {
     //     // console.log('response is ' + response.response);
