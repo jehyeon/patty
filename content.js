@@ -1,6 +1,6 @@
 const debugMode = true;
 
-// Element 세팅
+// css
 const bubble_css = {
   'position': 'absolute',
   'margin-top': '-2em',
@@ -13,7 +13,11 @@ const bubble_css = {
   'font-size': '12pt',
   'z-index': 9999
 };
-const bubble = $('<span/>').css(bubble_css);
+
+const dragged_css = {
+  'background-color': 'gray',
+  'color': 'white'
+};
 
 var target;
 var originText = target;
@@ -27,7 +31,8 @@ $('*').mouseup(function(e) {
 
     // 드래그한 상태에서 다른 text 드래그 시 삭제
     if (dragging == true) {
-      $('span.dragged').remove();
+      $('span.bubble').remove();
+      $('span.dragged').contents().unwrap();
       dragging = false;
     }
 
@@ -56,12 +61,14 @@ $('*').mouseup(function(e) {
           console.log('response is ' + response.response);
         }
         
-        target.html(originText.replace(dragged, "<span class='dragged'>" + response.response + "</span>"  + dragged));
-        $('span.dragged').css(bubble_css);
+        target.html(originText.replace(dragged, "<span class='bubble'>" + response.response + "</span>"  
+          + "<span class='dragged'>" + dragged + "</span>"));
+        $('span.bubble').css(bubble_css);
+        $('span.dragged').css(dragged_css);
 
       } else {
         if (debugMode) {
-          // console.log('No reponse')
+          console.log('No reponse')
         }
       }
     });
