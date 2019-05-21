@@ -48,41 +48,53 @@ $('*').mouseup(function(e) {
     target = $(this);
     originText = target.html();
 
-    let data = {
-      msg: 'TRANSLATE',
-      data: {
-        before: dragged
-      }
-    };
+    
+    bubbleUp(dragged);
 
-    chrome.runtime.sendMessage(data, function(response) {
-      if (response) {
-        if (debugMode) {
-          console.log('response is ' + response.response);
-        }
-        
-        target.html(originText.replace(dragged, "<span class='bubble'>" + response.response + "</span>"  
-          + "<span class='dragged'>" + dragged + "</span>"));
-        $('span.bubble').css(bubble_css);
-        $('span.dragged').css(dragged_css);
-
-      } else {
-        if (debugMode) {
-          console.log('No reponse')
-        }
-      }
-    });
   }
 });
 
-function addItem(dragged) {
+function addItem(_before, _after) {
   chrome.runtime.sendMessage(
     {
       msg: 'ADD',
       data: {
-        before: dragged,
-        after: dragged
+        before: _before,
+        after: _after
       }
     }
   );
+}
+
+function bubbleUp(dragged) {
+
+  let data = {
+    msg: 'TRANSLATE',
+    data: {
+      before: dragged
+    }
+  };
+
+  // Translate dragged
+  chrome.runtime.sendMessage(data, function(response) {
+    if (response) {
+      if (debugMode) {
+        console.log('response is ' + response.response);
+      }
+      
+      target.html(originText.replace(dragged, "<span class='bubble'>" + response.response + "</span>"  
+        + "<span class='dragged'>" + dragged + "</span>"));
+
+      $('span.bubble').css(bubble_css);
+      $('span.dragged').css(dragged_css);
+
+      // dragged가 온전하지 못한 문장일 경우 수정 필요
+      addItem(dragged, response.response);
+      
+    } else {
+      if (debugMode) {
+        console.log('No reponse')
+      }
+    }
+  });
 }

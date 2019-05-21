@@ -32,8 +32,10 @@ chrome.runtime.onMessage.addListener(
       case 'ADD':
         // sync['data'] 가져온 뒤 update 후 다시 set
         chrome.storage.sync.get(['data'], function (response) {
-          let added = {};
-          added[request.data.before] = request.data.after;
+          let added = {
+            before: request.data.before,
+            after: request.data.after
+          };
 
           if (debugMode) {
             console.log('Add to ');
