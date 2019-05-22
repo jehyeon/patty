@@ -1,24 +1,5 @@
 const debugMode = true;
 
-// css
-const bubble_css = {
-  'position': 'absolute',
-  'margin-top': '-2em',
-  'padding': '10px',
-  'height': '1em',
-  'line-height': '1em',
-  'border-radius': '20px',
-  'background': 'black',
-  'color': 'white',
-  'font-size': '12pt',
-  'z-index': 9999
-};
-
-const dragged_css = {
-  'background-color': 'gray',
-  'color': 'white'
-};
-
 var target;
 var originText = target;
 var dragging = false;
@@ -48,8 +29,7 @@ $('*').mouseup(function(e) {
     target = $(this);
     originText = target.html();
 
-    
-    bubbleUp(dragged);
+    translate(dragged); // translate -> bubbleUp action
 
   }
 });
@@ -66,7 +46,7 @@ function addItem(_before, _after) {
   );
 }
 
-function bubbleUp(dragged) {
+function translate(dragged) {
 
   let data = {
     msg: 'TRANSLATE',
@@ -82,19 +62,46 @@ function bubbleUp(dragged) {
         console.log('response is ' + response.response);
       }
       
-      target.html(originText.replace(dragged, "<span class='bubble'>" + response.response + "</span>"  
-        + "<span class='dragged'>" + dragged + "</span>"));
-
-      $('span.bubble').css(bubble_css);
-      $('span.dragged').css(dragged_css);
+      bubbleUp(dragged, response.response);
 
       // dragged가 온전하지 못한 문장일 경우 수정 필요
       addItem(dragged, response.response);
-      
+
     } else {
       if (debugMode) {
         console.log('No reponse')
       }
     }
   });
+}
+
+function bubbleUp(_before, _after) {
+  // 매개변수에 target 추가 필요
+
+  const bubble_css = {
+    'position': 'absolute',
+    'margin-top': '-2em',
+    'padding': '10px',
+    'height': '1em',
+    'line-height': '1em',
+    'border-radius': '20px',
+    'background': 'black',
+    'color': 'white',
+    'font-size': '12pt',
+    'z-index': 9999
+  };
+  
+  const dragged_css = {
+    'background-color': 'gray',
+    'color': 'white'
+  };
+
+  const url = chrome.runtime.getURL('icons/add.svg');
+  console.log(url);
+
+  target.html(originText.replace(_before, "<span class='bubble'>" + _after + "</span>"  
+    + "<span class='dragged'>" + _before + "</span>"));
+
+  $('span.bubble').css(bubble_css);
+  $('span.dragged').css(dragged_css);
 }
