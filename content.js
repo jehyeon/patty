@@ -49,6 +49,8 @@ function addItem(_before, _after) {
       }
     }
   );
+
+  // 성공적으로 아이템 추가 시 팝업 창 띄우기 (additional)
 }
 
 function translate(dragged) {
