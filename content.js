@@ -4,6 +4,11 @@ var target;
 var originText = target;
 var dragging = false;
 
+$('*').click(function() {
+  // 아무곳 클릭 시 bubble 삭제
+  bubbleDown();
+});
+
 $('*').mouseup(function(e) {
   e.stopPropagation();      // 여러 번 호출되는 것을 prevent (* selctor is one or more elements)
 
@@ -13,8 +18,7 @@ $('*').mouseup(function(e) {
 
     // 드래그한 상태에서 다른 text 드래그 시 삭제
     if (dragging == true) {
-      $('span.bubble').remove();
-      $('span.dragged').contents().unwrap();
+      bubbleDown();
       dragging = false;
     }
 
@@ -65,9 +69,6 @@ function translate(dragged) {
       
       bubbleUp(dragged, response.response);
 
-      // dragged가 온전하지 못한 문장일 경우 수정 필요
-      addItem(dragged, response.response);
-
     } else {
       if (debugMode) {
         console.log('No reponse')
@@ -102,9 +103,28 @@ function bubbleUp(_before, _after) {
   const url = chrome.runtime.getURL('icons/add.svg');
   console.log(url);
 
-  target.html(originText.replace(_before, "<span class='bubble'>" + _after + "</span>"  
+  target.html(originText.replace(_before, 
+    "<span class='bubble'>" 
+      + _after 
+      + "<button class='add' />"
+    + "</span>"  
     + "<span class='dragged'>" + _before + "</span>"));
 
   $('span.bubble').css(bubble_css);
   $('span.dragged').css(dragged_css);
+
+  // click 이벤트 추가
+  $('button.add').click(function() {
+    // dragged가 온전하지 못한 문장일 경우 수정 필요
+
+    const before = target.children('.dragged').text();
+    const after = target.children('.bubble').text();
+    
+    addItem(before, after);
+  });
+}
+
+function bubbleDown() {
+  $('span.bubble').remove();
+  $('span.dragged').contents().unwrap();
 }
