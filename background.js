@@ -50,6 +50,14 @@ chrome.runtime.onMessage.addListener(
           })
         });
         break;
+      case 'DELETE':
+        chrome.storage.sync.get(['data'], function (response) {
+          const datas = response.data;
+          datas.splice(request.index,1); // 해당 인덱스 데이터 삭제
+
+          chrome.storage.sync.set({data: datas});
+        });
+        break;
     }
     return true;
 });

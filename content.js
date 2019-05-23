@@ -102,9 +102,6 @@ function bubbleUp(_before, _after) {
     'color': 'white'
   };
 
-  const url = chrome.runtime.getURL('icons/add.svg');
-  console.log(url);
-
   target.html(originText.replace(_before, 
     "<span class='bubble'>" 
       + _after 
@@ -118,6 +115,9 @@ function bubbleUp(_before, _after) {
   // click 이벤트 추가
   $('button.add').click(function() {
     // dragged가 온전하지 못한 문장일 경우 수정 필요
+    if (debugMode) {
+      console.log(target.children());
+    }
 
     const before = target.children('.dragged').text();
     const after = target.children('.bubble').text();
