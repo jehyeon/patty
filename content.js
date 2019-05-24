@@ -5,6 +5,7 @@ importToFonts();
 var target;
 var originText = target;
 var dragging = false;
+const addBtnSrc = chrome.extension.getURL('icons/add.svg');
 
 $('*').click(function() {
   // 아무곳 클릭 시 bubble 삭제
@@ -87,15 +88,18 @@ function bubbleUp(_before, _after) {
   const bubble_css = {
     'position': 'absolute',
     'font-family': 'Noto Sans KR, sans-serif',
-    'margin-top': '-3em',
-    'padding': '5px 40px 5px 10px',
-    'border-radius': '20px',
-    'background': 'black',
+    'margin-top': '-2.8em',
+    'padding': '5px 30px 5px 20px',
+    'border-radius': '12px',
+    // 'background': 'black',
+    'background': '#FF5A5A',
+    'box-shadow': '2px 5px 6px rgba(193,193,193,0.5)',
     'color': 'white',
     'max-width': '500px',
-    'font-size': '12pt',
+    // 'font-size': '12pt',
+    'font-size': '14pt',
     'white-space': 'nowrap',
-    'overflow': 'hidden',
+    // 'overflow': 'hidden',
     'text-overflow': 'ellipsis',
     'z-index': 9999
   };
@@ -108,25 +112,40 @@ function bubbleUp(_before, _after) {
   const add_css = {
     'position': 'absolute',
     'top': '50%',
-    'right': '15px',
-    'margin-top': '-10px',
-    'width': '20px',
-    'height': '20px'
+    'right': '10px',
+    'margin-top': '-6px',
+    'width': '12px',
+    'height': '12px',
+    'cursor': 'pointer'
+  }
+
+  const bubble_tail_css = {
+    'position': 'absolute',
+    'bottom': '-12px',
+    'left': '0px',
+    'border-style': 'solid',
+    'border-width': '16px',
+    'border-color': 'transparent transparent transparent #FF5A5A'
   }
 
   target.html(originText.replace(_before, 
     "<span class='bubble'>" 
       + _after
-      + "<button class='add' />"
-    + "</span>"  
+      + "<img class='add' />"
+    + "<span class='bubble_tail'></span></span>"  
     + "<span class='dragged'>" + _before + "</span>"));
 
+  // css 적용하기
   $('span.bubble').css(bubble_css);
-  $('button.add').css(add_css);
+  $('img.add').css(add_css);
+  $('span.bubble_tail').css(bubble_tail_css);
   $('span.dragged').css(dragged_css);
 
+  // button 이미지 로드
+  $('img.add').attr('src', addBtnSrc);
+
   // click 이벤트 추가
-  $('button.add').click(function() {
+  $('img.add').click(function() {
     // dragged가 온전하지 못한 문장일 경우 수정 필요
     if (debugMode) {
       console.log(target.children());
@@ -149,7 +168,7 @@ function importToFonts() {
   var link = document.createElement('link');
   link.setAttribute('rel', 'stylesheet');
   link.setAttribute('type', 'text/css');
-  link.setAttribute('href', 'https://fonts.googleapis.com/css?family=Noto+Sans+KR:500&display=swap');
+  link.setAttribute('href', 'https://fonts.googleapis.com/css?family=Noto+Sans+KR:400&display=swap');
   // Add more fonts here
 
   document.head.appendChild(link);
