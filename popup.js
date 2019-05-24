@@ -22,6 +22,9 @@ $('button.setting').click(function() {
 
 // Init
 // 시작 시 storage.sync 에서 데이터를 가져오고 popup.html에 update
+if (debugMode) {
+  console.log('First get datas');
+}
 chrome.storage.sync.get(['data'], function (response) {
   if (debugMode) {
     console.log(response);
@@ -39,11 +42,15 @@ chrome.storage.sync.get(['data'], function (response) {
 chrome.storage.onChanged.addListener(function(changes, namespace) {
   if (debugMode) {
     console.log(changes);
+    console.log('new.length: ' + changes.data.newValue.length + ', old.lenght: ' + changes.data.oldValue.length);
   }
 
   // 항목이 추가된 경우에만 append
-  if (changes.data.newValue.length > changes.data.oldValue) {
+  if (changes.data.newValue.length > changes.data.oldValue.length) {
     const last = changes.data.newValue.length - 1;
+    if (debugMode) {
+        console.log('Add -> ' + changes.data.newValue[last].before + ', ' + changes.data.newValue[last].after);
+    }
     const update = $("<tr><td class='before'>" + changes.data.newValue[last].before 
       + "</td><td class='after'>" + changes.data.newValue[last].after + "</td></tr>");
   
@@ -68,6 +75,10 @@ function addDeleteButton(target) {
         index: $(this).parent().index()
       }
     };
+
+    if (debugMode) {
+      console.log('send' + JSON.stringify(data));
+    }
     chrome.runtime.sendMessage(data)
 
     // popup.html에서 항목 삭제

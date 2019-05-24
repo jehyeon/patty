@@ -53,9 +53,19 @@ chrome.runtime.onMessage.addListener(
       case 'DELETE':
         chrome.storage.sync.get(['data'], function (response) {
           const datas = response.data;
-          datas.splice(request.index,1); // 해당 인덱스 데이터 삭제
-
-          chrome.storage.sync.set({data: datas});
+          if (debugMode) {
+            console.log('before data: ' + JSON.stringify(datas));
+            console.log('Delete -> ' + datas[request.data.index]);
+          }
+          datas.splice(request.data.index,1); // 해당 인덱스 데이터 삭제
+          if (debugMode) {
+            console.log('after data: ' + JSON.stringify(datas));
+          }
+          chrome.storage.sync.set({data: datas}, function(response) {
+            if (debugMode) {
+              console.log('Seted data: ' + JSON.stringify(response));
+            }
+          });
         });
         break;
     }
