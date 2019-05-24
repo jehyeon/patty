@@ -1,5 +1,7 @@
 const debugMode = true;
 
+importToFonts();
+
 var target;
 var originText = target;
 var dragging = false;
@@ -84,16 +86,17 @@ function bubbleUp(_before, _after) {
 
   const bubble_css = {
     'position': 'absolute',
+    'font-family': 'Noto Sans KR, sans-serif',
     'margin-top': '-3em',
-    'padding': '10px',
-    'height': '20px',
+    'padding': '5px 40px 5px 10px',
     'border-radius': '20px',
     'background': 'black',
     'color': 'white',
-    'font-size': '12pt',
     'max-width': '500px',
+    'font-size': '12pt',
     'white-space': 'nowrap',
     'overflow': 'hidden',
+    'text-overflow': 'ellipsis',
     'z-index': 9999
   };
   
@@ -102,14 +105,24 @@ function bubbleUp(_before, _after) {
     'color': 'white'
   };
 
+  const add_css = {
+    'position': 'absolute',
+    'top': '50%',
+    'right': '15px',
+    'margin-top': '-10px',
+    'width': '20px',
+    'height': '20px'
+  }
+
   target.html(originText.replace(_before, 
     "<span class='bubble'>" 
-      + _after 
+      + _after
       + "<button class='add' />"
     + "</span>"  
     + "<span class='dragged'>" + _before + "</span>"));
 
   $('span.bubble').css(bubble_css);
+  $('button.add').css(add_css);
   $('span.dragged').css(dragged_css);
 
   // click 이벤트 추가
@@ -129,4 +142,15 @@ function bubbleUp(_before, _after) {
 function bubbleDown() {
   $('span.bubble').remove();
   $('span.dragged').contents().unwrap();
+}
+
+function importToFonts() {
+  // Import google web fonts
+  var link = document.createElement('link');
+  link.setAttribute('rel', 'stylesheet');
+  link.setAttribute('type', 'text/css');
+  link.setAttribute('href', 'https://fonts.googleapis.com/css?family=Noto+Sans+KR:500&display=swap');
+  // Add more fonts here
+
+  document.head.appendChild(link);
 }
