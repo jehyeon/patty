@@ -1,6 +1,6 @@
 body {
-  width: 323px;
-  height: 567px;
+  width: 300px;
+  height: 500px;
   background-color: #272727;
   color: white;
 }
@@ -8,3 +8,27 @@ body {
 /* .wrapper table, tr, td {
   border: 1px solid gray;
 } */
+
+.box {
+  position: absolute;
+  top: 40px;
+  width: 100%;
+}
+/* buttons */
+.cancel {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.setting {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.deleteModeOn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
