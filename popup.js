@@ -9,9 +9,24 @@ $('button.cancel').click(function() {
 
 // temporary
 $('button.deleteModeOn').click(function() {
-  console.log('Delete mode on!');
-  addDeleteButton($('table.box tr'));
-  // 클릭 시 text 변경 (Delete off -> Delete on)
+  let button_target = $('table.box tr td:last-child');    // 각 tr의 마지막 td: delete button
+
+  if (button_target.text().length <= 0) {
+    if (debugMode) {
+      console.log('Delete mode on!');
+    }
+
+    DeleteModeOn(button_target);
+
+  } else {
+    if (debugMode) {
+      console.log('Delete mode off!');
+    }    
+
+    DeleteModeOff(button_target);
+
+  }
+
   // Delete mode on 일 때 새로 아이템을 추가할 경우 mode off 시키기
 });
 
@@ -32,7 +47,7 @@ chrome.storage.sync.get(['data'], function (response) {
 
   if (response.data.length > 0) {
     response.data.map(data => {
-      const item = $("<tr><td class='before'>" + data.before + "</td><td class='after'>" + data.after + "</td></tr>");
+      const item = $("<tr><td class='before'>" + data.before + "</td><td class='after'>" + data.after + "</td><td></td></tr>");
       box.append(item);
     });
   }
@@ -52,14 +67,20 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
         console.log('Add -> ' + changes.data.newValue[last].before + ', ' + changes.data.newValue[last].after);
     }
     const update = $("<tr><td class='before'>" + changes.data.newValue[last].before 
-      + "</td><td class='after'>" + changes.data.newValue[last].after + "</td></tr>");
+      + "</td><td class='after'>" + changes.data.newValue[last].after + "</td><td></td></tr>");
   
     box.append(update);
+
+    
+    // DeleteMode 취소하기
+    DeleteModeOff($('table.box tr td:last-child'));
   }
 });
 
-function addDeleteButton(target) {
-  target.append("<td class='delete'>x</td>")
+function DeleteModeOn (target) {
+  // target.append("<td class='delete'>x</td>")
+  target.html('x');
+  target.addClass('delete');
 
   // Delete button event
   $('td.delete').click(function() {
@@ -84,4 +105,9 @@ function addDeleteButton(target) {
     // popup.html에서 항목 삭제
     $(this).parent().remove();
   });
+}
+
+function DeleteModeOff (target) {
+  target.text('');
+  target.removeClass('delete');
 }
