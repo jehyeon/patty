@@ -70,10 +70,11 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
       + "</td><td class='after'>" + changes.data.newValue[last].after + "</td><td></td></tr>");
   
     box.append(update);
-  }
 
-  // DeleteMode 취소하기
-  DeleteModeOff($('table.box tr td:last-child'));
+    
+    // DeleteMode 취소하기
+    DeleteModeOff($('table.box tr td:last-child'));
+  }
 });
 
 function DeleteModeOn (target) {
