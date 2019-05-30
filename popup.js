@@ -2,38 +2,36 @@ const debugMode = true;
 
 const box = $('table.box');
 
+// 버튼 이미지 추가
+const closeBtnSrc = chrome.extension.getURL('icons/close.png');
+const menuBtnSrc = chrome.extension.getURL('icons/menu.png');
+const settingBtnSrc = chrome.extension.getURL('icons/setting.png');
+const deleteBtnSrc = chrome.extension.getURL('icons/delete.png');
+$('img.close_button').attr('src', closeBtnSrc);
+$('img.menu_button').attr('src', menuBtnSrc);
+$('img.setting_button').attr('src', settingBtnSrc);
+$('img.delete_all_button').attr('src', deleteBtnSrc);
+
 // 버튼 이벤트 추가
-$('button.cancel').click(function() {
+$('img.close_button').click(function() {
   window.close();
 });
 
-// temporary
-$('button.deleteModeOn').click(function() {
-  let button_target = $('table.box tr td:last-child');    // 각 tr의 마지막 td: delete button
-
-  if (button_target.text().length <= 0) {
-    if (debugMode) {
-      console.log('Delete mode on!');
-    }
-
-    DeleteModeOn(button_target);
-
+$('img.menu_button').click(function() {
+  if ($('div.menu').attr('display') == 'off') {
+    // Menu on
+    $('div.menu').attr('display', 'on');
   } else {
-    if (debugMode) {
-      console.log('Delete mode off!');
-    }    
-
-    DeleteModeOff(button_target);
-
+    // Menu off
+    $('div.menu').attr('display', 'off');
   }
-
-  // Delete mode on 일 때 새로 아이템을 추가할 경우 mode off 시키기
 });
 
-$('button.setting').click(function() {
+$('img.setting_button').click(function() {
   chrome.runtime.openOptionsPage()
 });
 
+// 항목별 삭제 버튼 이벤트는 항목 업데이트 혹은 추가 마다 선언됨
 
 // Init
 // 시작 시 storage.sync 에서 데이터를 가져오고 popup.html에 update
@@ -47,7 +45,14 @@ chrome.storage.sync.get(['data'], function (response) {
 
   if (response.data.length > 0) {
     response.data.map(data => {
-      const item = $("<tr><td class='before'>" + data.before + "</td><td class='after'>" + data.after + "</td><td></td></tr>");
+      const item = $("<tr class='element'><td class='before'>" + data.before + "</td><td class='after'>" + data.after + "</td></tr>");
+      
+      // 항목 삭제 버튼 추가
+      item.append($("<img class='delete_button pointer'" 
+      + "src='" + closeBtnSrc + "' />").click(function() {
+        delete_this($(this).parent());
+      }));
+
       box.append(item);
     });
   }
@@ -66,48 +71,30 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
     if (debugMode) {
         console.log('Add -> ' + changes.data.newValue[last].before + ', ' + changes.data.newValue[last].after);
     }
-    const update = $("<tr><td class='before'>" + changes.data.newValue[last].before 
-      + "</td><td class='after'>" + changes.data.newValue[last].after + "</td><td></td></tr>");
-  
-    box.append(update);
-
+    const update = $("<tr class='element'><td class='before'>" + changes.data.newValue[last].before 
+      + "</td><td class='after'>" + changes.data.newValue[last].after + "</td></tr>");
     
-    // DeleteMode 취소하기
-    DeleteModeOff($('table.box tr td:last-child'));
+    // 항목 삭제 버튼 추가
+    update.append($("<img class='delete_button pointer'" 
+      + "src='" + closeBtnSrc + "' />").click(function() {
+        delete_this($(this).parent());
+      }));
+
+    box.append(update);
   }
 });
 
-function DeleteModeOn (target) {
-  // target.append("<td class='delete'>x</td>")
-  target.html('x');
-  target.addClass('delete');
-
-  // Delete button event
-  $('td.delete').click(function() {
-
-    if (debugMode) {
-      console.log($(this).parent().html(), $(this).parent().index());
+function delete_this (target) {
+  console.log("GO");
+  console.log(target.html(), target.index());
+  const data = {
+    msg: 'DELETE',
+    data: {
+      index: target.index()
     }
+  };
 
-    // sync에서 데이터 삭제
-    const data = {
-      msg: 'DELETE',
-      data: {
-        index: $(this).parent().index()
-      }
-    };
+  chrome.runtime.sendMessage(data);
 
-    if (debugMode) {
-      console.log('send' + JSON.stringify(data));
-    }
-    chrome.runtime.sendMessage(data)
-
-    // popup.html에서 항목 삭제
-    $(this).parent().remove();
-  });
-}
-
-function DeleteModeOff (target) {
-  target.text('');
-  target.removeClass('delete');
+  target.remove();
 }

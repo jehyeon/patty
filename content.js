@@ -98,6 +98,7 @@ function bubbleUp(_before, _after) {
     'max-width': '500px',
     // 'font-size': '12pt',
     'font-size': '14pt',
+    'font-style': 'normal',
     'white-space': 'nowrap',
     // 'overflow': 'hidden',
     'text-overflow': 'ellipsis',

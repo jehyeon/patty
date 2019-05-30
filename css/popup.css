@@ -1,10 +1,124 @@
 body {
-  width: 323px;
-  height: 567px;
-  background-color: #272727;
+  margin: 0;
+  width: 300px;
+  height: 500px;
+  background-color: #393939;
   color: white;
 }
+
+.menu {
+  position: absolute;
+  right: 8px;
+  top: 35px;
+  width: 15px;
+}
+
+.menu[display='off'] {
+  display: none;
+}
+
+.menu[display='on'] {
+  display: block;
+}
+
+/* buttons */
+.pointer {
+  cursor: pointer;
+}
+
+.close_button {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  height: 12px;
+  padding: 10px 0 0 10px;
+}
+
+.menu_button {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  height: 12px;
+  padding: 10px 15px 0 0;
+}
+
+.setting_button {
+  height: 15px;
+  margin-bottom: 10px;
+}
+
+.delete_all_button {
+  height: 15px;
+}
+
+.delete_button {
+  display: none;
+
+  /* Need to update position */
+  position: relative;
+  top: -11px;
+  left: 250px;
+
+  height: 8px;
+  float: left;
+}
+
 
 /* .wrapper table, tr, td {
   border: 1px solid gray;
 } */
+
+.wrapper {
+  position: absolute;
+  width: 90%;
+  height: 100%;
+  padding: 10% 5% 0 5%;
+  overflow-y: overlay;
+}
+
+.box {
+  width: 100%;
+
+  border-spacing: 0;
+}
+
+.box tr.element {
+  display: block;
+  
+  margin-bottom: 15px;
+  padding: 5px 0 8px 0;
+  background: #464444;
+
+  border-radius: 20px;
+  cursor: default;
+}
+
+tr.element td {
+  display: inline-block;
+  width: 50%;
+
+  padding: 0;
+
+  text-align: center;
+  cursor: default;
+}
+
+/* Element hover시 highlight 및 delete 버튼 활성화 */
+tr.element:hover,td:hover {
+  background: #555;
+}
+
+tr.element:hover .delete_button {
+  display: block;
+}
+
+/* Scroll bar */
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgb(255, 90, 90);
+}
