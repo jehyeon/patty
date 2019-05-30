@@ -81,6 +81,7 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
       }));
 
     box.append(update);
+  }
 });
 
 function delete_this (target) {
