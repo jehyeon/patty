@@ -1,5 +1,4 @@
 ## patty *(Fast translate for you)*
----
 
 #### Preview
 ![preview](./README/preview.png)
