@@ -5,15 +5,26 @@
       <link rel="stylesheet" href="css/options.css"/>    
   </head>
   <body>
-    
-    <p>Currently, only kr -> en are supported.</p>
-    <!-- <div>
-      <p>Select theme</p>
-    </div>
+    <h1>Setting</h1>
+    <!-- <p>Currently, only kr -> en are supported.</p> -->
+    <p>Theme</p>
+    <select name='theme'>
+      <option value='blackpink' selected>blackpink</option>
+    </select>
 
-    <div>
-      <p>Choose language</p>
-    </div> -->
+
+    <p>Export file type</p>
+    <select name='exportType'>
+      <option value='text'>.txt</option>
+    </select>
+
+    <p>Choose language</p>
+    <select name='before'>
+      <option value='en' selected>en</option>
+    </select> to <select name='after'>
+      <option value='kr' selected>kr</option>
+    </select>
+    
 
     <script src="lib/jquery-3.4.1.min.js"></script>
     <script src="options.js"></script>
