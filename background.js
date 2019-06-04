@@ -68,6 +68,13 @@ chrome.runtime.onMessage.addListener(
           });
         });
         break;
+      case 'DELETE_ALL':
+        chrome.storage.sync.set({data: []}, function() {
+          if (debugMode) {
+            console.log('Delete all datas');
+          }
+        });
+        break;
     }
     return true;
 });

@@ -31,6 +31,14 @@ $('img.setting_button').click(function() {
   chrome.runtime.openOptionsPage()
 });
 
+$('img.delete_all_button').click(function() {
+  const data = {
+    msg: 'DELETE_ALL'
+  };
+  chrome.runtime.sendMessage(data);
+  $('tr.element').remove();
+});
+
 // 항목별 삭제 버튼 이벤트는 항목 업데이트 혹은 추가 마다 선언됨
 
 // Init
