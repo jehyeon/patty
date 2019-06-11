@@ -1,6 +1,6 @@
 const debugMode = true;
 
-const options = {options: {language: 'kr', export: 'text'}};
+const options = {options: {language: 'ko', export: 'text'}};
 
 // Extensions installed 시 동작
 chrome.runtime.onInstalled.addListener(function() {
@@ -42,7 +42,9 @@ chrome.runtime.onMessage.addListener(
         chrome.storage.sync.get(['options'], function (response) {
           let language = {};
           language.target = response.options.language;
-          language.source = language.target == 'kr' ? 'en' : 'kr';  // ! Need to update
+          language.source = language.target == 'ko' ? 'en' : 'ko';  // ! Need to update
+
+          console.log(language);
 
           translateThis(language, request.data.before, sendResponse);
         });
@@ -101,6 +103,7 @@ chrome.runtime.onMessage.addListener(
 function translateThis(language, wantToTranslate, sendResponse) {
   const source = language.source;
   const target = language.target;
+  const format = "html";
   const apiKey = "AIzaSyBuSU19mIptUkH0-8OHFpoRjOMieyy1o5Q"; // ! Need to update config get
 
   $.ajax({
