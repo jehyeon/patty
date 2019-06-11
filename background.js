@@ -36,7 +36,16 @@ chrome.runtime.onMessage.addListener(
     // Action 처리
     switch (request.msg) {
       case 'TRANSLATE':
-        translateThis(request.data.before, sendResponse);
+        // ex. language = { source: 'en', target: 'kr' }
+        
+        // for language data
+        chrome.storage.sync.get(['options'], function (response) {
+          let language = {};
+          language.target = response.options.language;
+          language.source = language.target == 'kr' ? 'en' : 'kr';  // ! Need to update
+
+          translateThis(language, request.data.before, sendResponse);
+        });
         break;
       case 'ADD':
         // sync['data'] 가져온 뒤 update 후 다시 set
@@ -89,13 +98,10 @@ chrome.runtime.onMessage.addListener(
 });
 
 
-function translateThis(wantToTranslate, sendResponse) {
-  // 언어 설정은 추후 update
-  const source = "en";
-  const target = "ko";
-  const format = "html";
-  // Need to update config get
-  const apiKey = "AIzaSyBuSU19mIptUkH0-8OHFpoRjOMieyy1o5Q";
+function translateThis(language, wantToTranslate, sendResponse) {
+  const source = language.source;
+  const target = language.target;
+  const apiKey = "AIzaSyBuSU19mIptUkH0-8OHFpoRjOMieyy1o5Q"; // ! Need to update config get
 
   $.ajax({
     type: "POST",
@@ -107,6 +113,6 @@ function translateThis(wantToTranslate, sendResponse) {
       }
       sendResponse({response: response.data.translations[0].translatedText});
     }
-    // Need to update 'error 처리'
   });
+    // Need to update 'error 처리'
 }
