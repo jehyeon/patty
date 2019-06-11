@@ -1,11 +1,20 @@
 const debugMode = true;
 
+const options = {options: {language: 'kr', export: 'text'}};
+
 // Extensions installed 시 동작
 chrome.runtime.onInstalled.addListener(function() {
   // extension 설치 시 storage sync에 {data: []} 저장 
   chrome.storage.sync.set({data: []}, function () {
     if (debugMode) {
       console.log('Made data storage');
+    }
+  });
+
+  chrome.storage.sync.set(options, function () {
+    if (debugMode) {
+      console.log('Set options to ');
+      console.log(options);
     }
   });
 });
