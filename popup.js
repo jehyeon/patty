@@ -6,10 +6,12 @@ const box = $('table.box');
 const closeBtnSrc = chrome.extension.getURL('icons/close.png');
 const menuBtnSrc = chrome.extension.getURL('icons/menu.png');
 const settingBtnSrc = chrome.extension.getURL('icons/setting.png');
+const exportBtnSrc = chrome.extension.getURL('icons/export.svg');
 const deleteBtnSrc = chrome.extension.getURL('icons/delete.png');
 $('img.close_button').attr('src', closeBtnSrc);
 $('img.menu_button').attr('src', menuBtnSrc);
 $('img.setting_button').attr('src', settingBtnSrc);
+$('img.export_button').attr('src', exportBtnSrc);
 $('img.delete_all_button').attr('src', deleteBtnSrc);
 
 // 버튼 이벤트 추가
