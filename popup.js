@@ -2,7 +2,7 @@ const debugMode = true;
 
 const box = $('table.box');
 
-// 버튼 이미지 추가
+// 버튼 이미지 적용
 const closeBtnSrc = chrome.extension.getURL('icons/close.png');
 const menuBtnSrc = chrome.extension.getURL('icons/menu.png');
 const settingBtnSrc = chrome.extension.getURL('icons/setting.png');
@@ -31,6 +31,13 @@ $('img.menu_button').click(function() {
 
 $('img.setting_button').click(function() {
   chrome.runtime.openOptionsPage()
+});
+
+$('img.export_button').click(function() {
+  const data = {
+    msg: 'EXPORT'
+  };
+  chrome.runtime.sendMessage(data);
 });
 
 $('img.delete_all_button').click(function() {

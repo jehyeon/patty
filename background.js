@@ -27,7 +27,7 @@ chrome.runtime.onMessage.addListener(
       // Message Infos
       console.log('*** background receive message ***')
       console.log(request.msg);
-      console.log(request.data);
+      console.log(request.data ? request.data : null);
       console.log('from');
       console.log(sender);
       console.log('**********************************')
@@ -95,6 +95,16 @@ chrome.runtime.onMessage.addListener(
           }
         });
         break;
+      case 'EXPORT':
+        chrome.storage.sync.get(['options'], function (response) {
+          const exportType = response.options.export;
+
+          chrome.storage.sync.get(['data'], function (response) {
+            const datas = response.data;
+
+            exporting(exportType, datas);
+          });
+        });
     }
     return true;
 });
@@ -118,4 +128,9 @@ function translateThis(language, wantToTranslate, sendResponse) {
     }
   });
     // Need to update 'error 처리'
+}
+
+function exporting(exportType, datas) {
+  console.log(exportType, datas);
+  // ! Make to be download link
 }
