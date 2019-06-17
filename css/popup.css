@@ -113,7 +113,7 @@ tr.element td {
 }
 
 /* Element hover시 highlight 및 delete 버튼 활성화 */
-tr.element:hover,td:hover {
+tr.element:hover {
   background: #555;
 }
 
