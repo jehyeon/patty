@@ -46,11 +46,18 @@ body {
 
 .setting_button {
   height: 15px;
+  margin-top: 5px;
+  margin-bottom: 12px;
+}
+
+.export_button {
+  height: 13px;
   margin-bottom: 10px;
 }
 
 .delete_all_button {
-  height: 15px;
+  height: 20px;
+  margin-left: -3.5px;
 }
 
 .delete_button {

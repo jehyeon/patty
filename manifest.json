@@ -1,12 +1,13 @@
 {
   "manifest_version": 2,
   "name": "patty",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Fast traslate for you",
   "permissions": [
     "activeTab",
     "declarativeContent",
     "storage",
+    "downloads",
     "<all_urls>"
   ],
   "background": {
