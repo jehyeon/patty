@@ -131,6 +131,20 @@ function translateThis(language, wantToTranslate, sendResponse) {
 }
 
 function exporting(exportType, datas) {
-  console.log(exportType, datas);
-  // ! Make to be download link
+  if (debugMode) { console.log(exportType, datas); }
+
+  const text = JSON.stringify(datas)
+  const type = exportType == 'text' ?
+    {type: 'text/plain'} : {type: 'application/json'};
+  const fileName = exportType == 'text' ?
+    'datas.txt' : 'datas.json';
+
+  const blob = new Blob([text], type);
+  const url = window.URL.createObjectURL(blob);
+
+  chrome.downloads.download({
+    url: url,
+    filename: fileName,
+    saveAs: true
+  });
 }
