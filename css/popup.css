@@ -35,6 +35,11 @@ body {
   padding: 10px 0 0 10px;
 }
 
+.activate_button {
+  position: absolute;
+  left: 100px;  /* temporary */
+}
+
 .menu_button {
   position: absolute;
   top: 0;

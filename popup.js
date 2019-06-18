@@ -19,6 +19,20 @@ $('img.close_button').click(function() {
   window.close();
 });
 
+$('a.activate_button').click(function() {
+  // storage ['activate'] 수정
+  if (debugMode) { console.log('Clicked activate button!'); }
+  chrome.storage.sync.get(['activate'], function(response) {
+    const text = response.activate.mode ?
+      'activate off' :
+      'activate on';
+
+    chrome.storage.sync.set({activate: {mode: !response.activate.mode, text: text}});
+    
+    $('a.activate_button').html(text);
+  });
+});
+
 $('img.menu_button').click(function() {
   if ($('div.menu').attr('display') == 'off') {
     // Menu on
@@ -74,32 +88,40 @@ chrome.storage.sync.get(['data'], function (response) {
     });
   }
 });
-
-// Storage 업데이트 시 마지막에 항목 추가
-chrome.storage.onChanged.addListener(function(changes, namespace) {
-  if (debugMode) {
-    console.log(changes);
-    console.log('new.length: ' + changes.data.newValue.length + ', old.lenght: ' + changes.data.oldValue.length);
+// stroage.sync에서 활성화 모드 버튼 text 업데이트
+chrome.storage.sync.get(['activate'], function (response) {
+  if (debugMode) { 
+    console.log('update activate button value'); 
+    console.log(response);
   }
-
-  // 항목이 추가된 경우에만 append
-  if (changes.data.newValue.length > changes.data.oldValue.length) {
-    const last = changes.data.newValue.length - 1;
-    if (debugMode) {
-        console.log('Add -> ' + changes.data.newValue[last].before + ', ' + changes.data.newValue[last].after);
-    }
-    const update = $("<tr class='element'><td class='before'>" + changes.data.newValue[last].before 
-      + "</td><td class='after'>" + changes.data.newValue[last].after + "</td></tr>");
-    
-    // 항목 삭제 버튼 추가
-    update.append($("<img class='delete_button pointer'" 
-      + "src='" + closeBtnSrc + "' />").click(function() {
-        delete_this($(this).parent());
-      }));
-
-    box.append(update);
-  }
+  $('a.activate_button').html(response.activate.text);
 });
+
+// // Storage 업데이트 시 마지막에 항목 추가
+// chrome.storage.onChanged.addListener(function(changes, namespace) {
+//   if (debugMode) {
+//     console.log(changes);
+//     console.log('new.length: ' + changes.data.newValue.length + ', old.lenght: ' + changes.data.oldValue.length);
+//   }
+
+//   // 항목이 추가된 경우에만 append
+//   if (changes.data.newValue.length > changes.data.oldValue.length) {
+//     const last = changes.data.newValue.length - 1;
+//     if (debugMode) {
+//         console.log('Add -> ' + changes.data.newValue[last].before + ', ' + changes.data.newValue[last].after);
+//     }
+//     const update = $("<tr class='element'><td class='before'>" + changes.data.newValue[last].before 
+//       + "</td><td class='after'>" + changes.data.newValue[last].after + "</td></tr>");
+    
+//     // 항목 삭제 버튼 추가
+//     update.append($("<img class='delete_button pointer'" 
+//       + "src='" + closeBtnSrc + "' />").click(function() {
+//         delete_this($(this).parent());
+//       }));
+
+//     box.append(update);
+//   }
+// });
 
 function delete_this (target) {
   console.log("GO");

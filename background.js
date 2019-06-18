@@ -17,6 +17,8 @@ chrome.runtime.onInstalled.addListener(function() {
       console.log(options);
     }
   });
+
+  chrome.storage.sync.set({activate: {mode: true, text: 'activate on'}});
 });
 
 // event listener
