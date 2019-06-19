@@ -161,6 +161,11 @@ function bubbleUp(_before, _after) {
     
     addItem(before, after);
   });
+
+  // Prevent to drag
+  $('span.bubble').on('mousedown mousemove touchstart', function(e) {
+    e.preventDefault();
+  });
 }
 
 function bubbleDown() {
