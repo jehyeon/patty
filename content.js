@@ -4,7 +4,6 @@ importToFonts();
 
 var target;
 var originText = target;
-var dragging = false;
 const addBtnSrc = chrome.extension.getURL('icons/add.svg');
 
 $('*').click(function() {
@@ -19,14 +18,6 @@ $('*').mouseup(function(e) {
   // window.getSelection().toString().length < 150 인 경우
   if (window.getSelection && window.getSelection().toString().length > 1 
   && window.getSelection().toString().length < 300) {
-
-    // 드래그한 상태에서 다른 text 드래그 시 삭제
-    if (dragging == true) {
-      bubbleDown();
-      dragging = false;
-    }
-
-    dragging = true;
 
     // dragged: 드래그한 element
     const dragged = window.getSelection().toString();
