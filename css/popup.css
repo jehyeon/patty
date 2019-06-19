@@ -35,6 +35,15 @@ body {
   padding: 10px 0 0 10px;
 }
 
+.activate_button {
+  position: absolute;
+  width: 100px;
+  text-align: center;
+  margin-left: -50px;
+  left: 50%;
+  top: 8px;
+}
+
 .menu_button {
   position: absolute;
   top: 0;

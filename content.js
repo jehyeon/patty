@@ -13,11 +13,12 @@ $('*').click(function() {
 });
 
 $('*').mouseup(function(e) {
+  // 버튼 동작이 안되기도 함
   e.stopPropagation();      // 여러 번 호출되는 것을 prevent (* selctor is one or more elements)
-
+              
   // window.getSelection().toString().length < 150 인 경우
   if (window.getSelection && window.getSelection().toString().length > 1 
-    && window.getSelection().toString().length < 300) {
+  && window.getSelection().toString().length < 300) {
 
     // 드래그한 상태에서 다른 text 드래그 시 삭제
     if (dragging == true) {
@@ -31,14 +32,17 @@ $('*').mouseup(function(e) {
     const dragged = window.getSelection().toString();
 
     if (debugMode) {
-      console.log(dragged);    
+      console.log('draging: ' + dragged);    
     }
     
     target = $(this);
     originText = target.html();
-
-    translate(dragged); // translate -> bubbleUp action
-
+    
+    chrome.storage.sync.get(['activate'], function (response) {
+      if (response.activate.mode) {
+        translate(dragged); // translate -> bubbleUp action
+      }
+    });
   }
 });
 
