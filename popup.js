@@ -97,31 +97,33 @@ chrome.storage.sync.get(['activate'], function (response) {
   $('a.activate_button').html(response.activate.text);
 });
 
-// // Storage 업데이트 시 마지막에 항목 추가
-// chrome.storage.onChanged.addListener(function(changes, namespace) {
-//   if (debugMode) {
-//     console.log(changes);
-//     console.log('new.length: ' + changes.data.newValue.length + ', old.lenght: ' + changes.data.oldValue.length);
-//   }
-
-//   // 항목이 추가된 경우에만 append
-//   if (changes.data.newValue.length > changes.data.oldValue.length) {
-//     const last = changes.data.newValue.length - 1;
-//     if (debugMode) {
-//         console.log('Add -> ' + changes.data.newValue[last].before + ', ' + changes.data.newValue[last].after);
-//     }
-//     const update = $("<tr class='element'><td class='before'>" + changes.data.newValue[last].before 
-//       + "</td><td class='after'>" + changes.data.newValue[last].after + "</td></tr>");
+// Storage 업데이트 시 마지막에 항목 추가
+chrome.storage.onChanged.addListener(function(changes, namespace) {
+  // 항목이 추가된 경우에만 append
+  if (Object.keys(changes).includes('data')) {
+    if (debugMode) {
+      console.log(changes);
+      console.log('new.length: ' + changes.data.newValue.length + ', old.lenght: ' + changes.data.oldValue.length);
+    }
     
-//     // 항목 삭제 버튼 추가
-//     update.append($("<img class='delete_button pointer'" 
-//       + "src='" + closeBtnSrc + "' />").click(function() {
-//         delete_this($(this).parent());
-//       }));
-
-//     box.append(update);
-//   }
-// });
+    if (changes.data.newValue.length > changes.data.oldValue.length) {
+      const last = changes.data.newValue.length - 1;
+      if (debugMode) {
+          console.log('Add -> ' + changes.data.newValue[last].before + ', ' + changes.data.newValue[last].after);
+      }
+      const update = $("<tr class='element'><td class='before'>" + changes.data.newValue[last].before 
+        + "</td><td class='after'>" + changes.data.newValue[last].after + "</td></tr>");
+      
+      // 항목 삭제 버튼 추가
+      update.append($("<img class='delete_button pointer'" 
+        + "src='" + closeBtnSrc + "' />").click(function() {
+          delete_this($(this).parent());
+        }));
+  
+      box.append(update);
+    }
+  }
+});
 
 function delete_this (target) {
   console.log("GO");

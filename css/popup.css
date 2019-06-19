@@ -37,7 +37,11 @@ body {
 
 .activate_button {
   position: absolute;
-  left: 100px;  /* temporary */
+  width: 100px;
+  text-align: center;
+  margin-left: -50px;
+  left: 50%;
+  top: 8px;
 }
 
 .menu_button {
