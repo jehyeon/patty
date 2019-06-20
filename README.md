@@ -1,7 +1,8 @@
-## patty *(Fast translate for you)*
+# Patty
+Translate faster and easier with your browser
 
-#### Preview
-![preview](./README/preview.PNG)
+## Preview
+![preview](./icons/giphy.gif)
 
-#### Icon
-![icon](./icons/v2_48.png)
+## Usage
+Currently only chrome browser is supported.
