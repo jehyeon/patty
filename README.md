@@ -11,7 +11,7 @@ Currently only chrome browser is supported.
 ```
 $ git clone https://github.com/jehyeon/patty.git
 ```
-or [download .zip](/jehyeon/patty/archive/master.zip)
+or [download .zip](/archive/master.zip)
 
 ##### 2.
 Go to **chrome://extensions** and **Load unpacked**
