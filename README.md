@@ -14,7 +14,7 @@ $ git clone https://github.com/jehyeon/patty.git
 or [download .zip](/jehyeon/patty/archive/master.zip)
 
 ##### 2.
-Go to [chrome://extensions](chome://extensions) and **Load unpacked**
+Go to **chrome://extensions** and **Load unpacked**
 
 # Feedback
 Please submit you [issue](https://github.com/jehyeon/patty/issues)
