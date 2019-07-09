@@ -17,4 +17,4 @@ or [download .zip](https://github.com/jehyeon/patty/archive/master.zip)
 Go to **chrome://extensions** and **Load unpacked**
 
 # Feedback
-Please submit you [issue](https://github.com/jehyeon/patty/issues)
+Please submit your [issue](https://github.com/jehyeon/patty/issues)
